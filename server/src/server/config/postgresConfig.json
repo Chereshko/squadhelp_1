@@ -1,24 +1,24 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "admin",
-    "database": "todo-dev",
+    "username": "irina",
+    "password": "irina",
+    "database": "todo_dev",
     "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": "Op"
   },
   "test": {
-    "username": "postgres",
-    "password": "admin",
-    "database": "todo-test",
+    "username": "irina",
+    "password": "irina",
+    "database": "todo_test",
     "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": "Op"
   },
   "production": {
-    "username": "postgres",
-    "password": "admin",
-    "database": "todo-prod",
+    "username": "irina",
+    "password": "irina",
+    "database": "todo_prod",
     "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": "Op"
