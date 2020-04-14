@@ -185,6 +185,9 @@ class CreatorDashboard extends React.Component {
                                 <option value='asc'>Ascending</option>
                             </select>
                         </div>
+                        <Link to='transactions' className={styles.btn}>
+                            Transactions history
+                        </Link>
                     </div>
                 </div>
                 {
