@@ -107,6 +107,10 @@ class ContestPage extends React.Component {
         const {role} = this.props.userStore.data;
         const {contestByIdStore, changeShowImage, changeContestViewMode, getData, clearSetOfferStatusError} = this.props;
         const {isShowOnFull, imagePath, error, isFetching, isBrief, contestData, offers, setOfferStatusError} = contestByIdStore;
+        const OfferElement =(
+            <span onClick={() => changeContestViewMode(false)}
+                  className={classNames(styles.btn, {[styles.activeBtn]: !isBrief})}>Offer</span>
+        )
         return (
             <div>
                 {/*<Chat/>*/}
@@ -127,8 +131,11 @@ class ContestPage extends React.Component {
                                     <div className={styles.buttonsContainer}>
                         <span onClick={() => changeContestViewMode(true)}
                               className={classNames(styles.btn, {[styles.activeBtn]: isBrief})}>Brief</span>
-                                        <span onClick={() => changeContestViewMode(false)}
-                                              className={classNames(styles.btn, {[styles.activeBtn]: !isBrief})}>Offer</span>
+                                        {
+                                            contestByIdStore.offers && contestByIdStore.offers.length !== 0
+                                            ? OfferElement
+                                            : null
+                                        }
                                     </div>
                                     {
                                         isBrief ?
