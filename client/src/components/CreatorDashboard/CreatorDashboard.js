@@ -5,7 +5,9 @@ import {
     getContestsForCreative,
     clearContestList,
     setNewCreatorFilter,
-    getDataForContest
+    getDataForContest,
+    addContestType,
+    removeContestType
 } from '../../actions/actionCreator';
 import ContestsContainer from '../../components/ContestsContainer/ContestsContainer';
 import ContestBox from "../ContestBox/ContestBox";
@@ -14,24 +16,39 @@ import queryString from 'query-string';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import TryAgain from '../../components/TryAgain/TryAgain';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 
 const types = ['', 'name,tagline,logo', 'name', 'tagline', 'logo', 'name,tagline', 'logo,tagline', 'name,logo'];
-
+const choices = []
 
 class CreatorDashboard extends React.Component {
 
 
     renderSelectType = () => {
-        const array = [];
+
         const {creatorFilter} = this.props;
-        types.forEach((el, i) => !i || array.push(<option key={i - 1} value={el}>{el}</option>));
         return (
-            <select onChange={({target}) => this.changePredicate({
-                name: 'typeIndex',
-                value: types.indexOf(target.value)
-            })} value={types[creatorFilter.typeIndex]} className={styles.input}>
-                {array}
+            <select onChange={e => {
+                addContestTypeToFilter(e.currentTarget.value);
+                if(!(e.currentTarget.value in choices)) {
+                    choices.push(e.currentTarget.value);
+                }
+            }}>
+                <option value="" selected>Select </option>
+                {
+                    types.map((choice) => {
+                        return (
+                            <option key={choice} value={choice}>
+                                {
+                                    choice
+                                }
+                            </option>
+                        )
+                    })
+                }
+
             </select>
         );
     };
@@ -52,6 +69,32 @@ class CreatorDashboard extends React.Component {
         );
     };
 
+    Badge = () => {
+        const {creatorFilter:{selectedContestsTypes}, removeContestTypeFromFilter} = this.props
+        console.log(selectedContestsTypes);
+        return(
+            <span>
+                {choices.map((choice) => (
+                    <button className={styles.choiceOnBadge} key={choice} value={choice}>
+                        {
+                            choice
+                        }
+                        <i onClick={(e) => {
+                            let ind=choices.indexOf(e.currentTarget.value);
+                            choices.splice(ind, 1);
+                            removeContestTypeFromFilter(e.currentTarget.value);
+
+                        }}><FontAwesomeIcon icon={faTimes} /></i>
+                    </button>
+
+                ))}
+            </span>
+        )
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.getContests(this.props.creatorFilter);
+    }
 
     componentWillReceiveProps(nextProps, nextContext) {
         if (nextProps.location.search !== this.props.location.search) {
@@ -96,7 +139,8 @@ class CreatorDashboard extends React.Component {
             contestId: obj.contestId ? obj.contestId : '',
             industry: obj.industry ? obj.industry : '',
             awardSort: obj.awardSort || 'asc',
-            ownEntries: typeof obj.ownEntries === "undefined" ? false : obj.ownEntries
+            ownEntries: typeof obj.ownEntries === "undefined" ? false : obj.ownEntries,
+            selectedContestsTypes: obj.selectedContestsTypes || []
         };
         if (!isEqual(filter, this.props.creatorFilter)) {
             this.props.newFilter(filter);
@@ -162,6 +206,7 @@ class CreatorDashboard extends React.Component {
                         <div className={styles.inputContainer}>
                             <span>By contest type</span>
                             {this.renderSelectType()}
+                            {this.Badge()}
                         </div>
                         <div className={styles.inputContainer}>
                             <span>By contest ID</span>
@@ -218,7 +263,9 @@ const mapDispatchToProps = (dispatch) => {
         getContests: (data) => dispatch(getContestsForCreative(data)),
         clearContestsList: () => dispatch(clearContestList()),
         newFilter: (filter) => dispatch(setNewCreatorFilter(filter)),
-        getDataForContest: () => dispatch(getDataForContest())
+        getDataForContest: () => dispatch(getDataForContest()),
+        addContestTypeToFilter: () => dispatch(addContestType()),
+        removeContestTypeFromFilter: () => dispatch(removeContestType())
     }
 };
 

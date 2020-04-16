@@ -64,6 +64,32 @@ export default function (state = initialState, action) {
                 creatorFilter: {...state.creatorFilter,...action.filter}
             }
         }
+        case ACTION.ADD_CONTEST_TYPE: {
+            const {data} = action;
+            const {creatorFilter: {selectedContestsTypes}, creatorFilter} = state;
+            const options = new Set(selectedContestsTypes)
+            options.add(data)
+            return {
+                ...state,
+                creatorFilter: {
+                    ...creatorFilter,
+                    selectedContestsTypes: [...options]
+                }
+            }
+        }
+        case ACTION.REMOVE_CONTEST_TYPE: {
+            const {data} = action;
+            const {creatorFilter: {selectedContestsTypes}, creatorFilter} = state;
+            const options = new Set(selectedContestsTypes)
+            options.delete(data)
+            return {
+                ...state,
+                creatorFilter: {
+                    ...creatorFilter,
+                    selectedContestsTypes: [...options]
+                }
+            }
+        }
         default:
             return state;
     }

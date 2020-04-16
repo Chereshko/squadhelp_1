@@ -1,4 +1,4 @@
-FROM node:10.15.0-alpine as build-stage
+reFROM node:10.15.0-alpine as build-stage
 
 ARG NODE_ENV="production"
 
