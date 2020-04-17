@@ -69,6 +69,19 @@ class CreatorDashboard extends React.Component {
         );
     };
 
+    const onDeleteBadgeClick = (e) =>{
+        let ind=choices.indexOf(e.currentTarget.value);
+        choices.splice(ind, 1);
+        removeContestTypeFromFilter(e.currentTarget.value);
+    }
+
+    onDeleteBadgeClicked = (e) =>{
+        let ind=choices.indexOf(e.currentTarget.value);
+        choices.splice(ind, 1);
+        removeContestTypeFromFilter(e.currentTarget.value);
+
+    }
+
     Badge = () => {
         const {creatorFilter:{selectedContestsTypes}, removeContestTypeFromFilter} = this.props
         console.log(selectedContestsTypes);
@@ -79,12 +92,9 @@ class CreatorDashboard extends React.Component {
                         {
                             choice
                         }
-                        <i onClick={(e) => {
-                            let ind=choices.indexOf(e.currentTarget.value);
-                            choices.splice(ind, 1);
-                            removeContestTypeFromFilter(e.currentTarget.value);
-
-                        }}><FontAwesomeIcon icon={faTimes} /></i>
+                        <i onClick={(e) =>
+                            this.onDeleteBadgeClick(e)
+                        }><FontAwesomeIcon icon={faTimes} /></i>
                     </button>
 
                 ))}
