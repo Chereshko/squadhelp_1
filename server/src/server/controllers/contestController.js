@@ -1,12 +1,13 @@
 const db = require('../models/index');
 import ServerError from '../errors/ServerError';
-
 const contestQueries = require('./queries/contestQueries');
 const userQueries = require('./queries/userQueries');
 const controller = require('../../socketInit');
 const UtilFunctions = require('../utils/functions');
 const NotFound = require('../errors/UserNotFoundError');
 const CONSTANTS = require('../../constants');
+const { Op } = require('sequelize');
+const moment = require('moment');
 
 module.exports.dataForContest = async (req, res, next) => {
   let response = {};
@@ -36,6 +37,25 @@ module.exports.dataForContest = async (req, res, next) => {
     next(new ServerError('cannot get contest preferences'));
   }
 };
+
+module.exports.offerFiles = async (req, res, next) => {
+  try{
+    const conditions = {
+      where:{
+        fileName: { [Op.not]:null },
+      },
+    };
+    if(req.body.from){
+      conditions.where.offerDate={ [Op.gte]:moment(req.body.from).moment() };
+    }
+    const offers = await contestQueries.queryGetOfferFiles(conditions);
+    res.send(offers);
+  }
+  catch(e){
+    next(e);
+  }
+};
+
 
 module.exports.getContestById = async (req, res, next) => {
   try {

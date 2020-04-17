@@ -49,3 +49,13 @@ module.exports.createOffer = async (data) => {
     return result.get({ plain: true });
   }
 };
+
+module.exports.queryGetOfferFiles = async(data) => {
+  const offerFiles = await bd.Offers.findAll(data);
+  if(offerFiles){
+    return offerFiles;
+  }
+  else{
+    throw new ServerError('no data');
+  }
+}

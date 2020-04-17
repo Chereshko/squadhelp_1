@@ -178,4 +178,9 @@ router.post(
   chatController.getCatalogs,
 );
 
+router.get(
+  '/offerFiles',
+  contestController.offerFiles,
+);
+
 module.exports = router;

@@ -34,6 +34,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 'pending',
       },
+      offerDate:{
+          type: DataTypes.Date,
+          allowNull:false,
+          defaultValue: sequelize.fn('now'),
+      },
     },
     {
       timestamps: false,
