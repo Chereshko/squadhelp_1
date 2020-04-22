@@ -183,4 +183,9 @@ router.get(
   contestController.offerFiles,
 );
 
+router.get(
+  '/getTransactionHistory',
+  checkToken.checkToken,
+  userController.getTransactionHistoryByID,
+);
 module.exports = router;

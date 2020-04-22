@@ -13,6 +13,7 @@ const controller = require('../../socketInit');
 const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
+const transactionHistoryQueries = require('./queries/transactionHistoryQueries');
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -209,5 +210,16 @@ module.exports.cashout = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.getTransactionHistoryByID = async(req,res,next) =>{
+  try{
+    const {tokenData: {userId}} = req;
+    const transactions = await transactionHistoryQueries.getTransactionsByID(userId);
+    res.send(transactions);
+  }
+  catch(e){
+    next(e);
+  }
+}
 
 
